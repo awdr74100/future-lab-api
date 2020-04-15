@@ -17,6 +17,6 @@ admin.initializeApp({
   databaseURL: process.env.FIREBASE_DATABASEURL,
 });
 
-const db = admin.database();
+const database = admin.database();
 
-module.exports = db;
+module.exports = database;
