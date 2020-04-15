@@ -1,45 +1,29 @@
 const express = require("express");
-const app = express();
 const bodyParser = require("body-parser");
+require("dotenv").config();
+const app = express();
+const user = require("./routes/user");
 
+// parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
+// parse application/json
 app.use(bodyParser.json());
 
-app.post("/user/check", (req, res) => {
-  const userId = req.body.userId;
-  const time = new Date().getTime();
-  if (userId === "n1") {
-    res.send({
-      id: userId,
-      date: time,
-      success: true,
-      message: "此用戶無違規紀錄，成功進入"
-    });
-  } else if (userId === "n2") {
-    res.send({
-      id: userId,
-      date: time,
-      success: false,
-      message: "此用戶尚未有權限，請聯絡門禁管理員"
-    });
-  } else if (userId === "n3") {
-    res.send({
-      id: userId,
-      date: time,
-      success: false,
-      message: "此用戶權限遭到移除，請聯絡門禁管理員"
-    });
-  }
-});
+// router
+app.use("/user", user);
 
+// warn
 app.use((req, res, next) => {
-  res.status(404).send({
-    success: false,
-    msg: "你所查詢的 API 不存在，請在檢查看看"
-  });
+  res.status(404).send("你所查詢的 API 不存在，請在檢查看看");
 });
 
+app.use((err, res, req, next) => {
+  res.send("伺服器有些問題，請稍後在試");
+});
+
+// open localhost
 const port = process.env.PORT || 3000;
+
 app.listen(port, () => {
-  console.log(`開啟 port 為 ${port} 的 localhost`);
+  console.log(`已開啟 PORT 為 ${port} 的本地伺服器`);
 });
