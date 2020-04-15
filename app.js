@@ -18,7 +18,7 @@ app.use((req, res, next) => {
 });
 
 app.use((err, res, req, next) => {
-  res.send("伺服器有些問題，請稍後在試");
+  res.status(500).send("伺服器有些問題，請稍後在試");
 });
 
 // open localhost
