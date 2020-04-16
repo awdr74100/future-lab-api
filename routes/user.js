@@ -13,21 +13,37 @@ router.post("/register", (req, res) => {
     come_time: "never",
     out_time: "never",
   };
-  dbRef
-    .push(student)
-    .then(() => {
-      res.send({
-        success: true,
-        message: "註冊成功",
-        uid: uid,
-      });
-    })
-    .catch(() => {
+  dbRef.once("value", (snapshot) => {
+    let pass = true;
+    for (const [key, value] of Object.entries(snapshot.val())) {
+      if (value.uid === uid) {
+        pass = false;
+        break;
+      }
+    }
+    if (!pass) {
       res.send({
         success: false,
-        message: "操作失敗，請重新在試一次",
+        message: "重複註冊，操作失敗",
       });
-    });
+    } else {
+      dbRef
+        .push(student)
+        .then(() => {
+          res.send({
+            success: true,
+            message: "註冊成功",
+            uid: uid,
+          });
+        })
+        .catch(() => {
+          res.send({
+            success: false,
+            message: "操作失敗，請重新在試一次",
+          });
+        });
+    }
+  });
 });
 
 // 檢查用戶
