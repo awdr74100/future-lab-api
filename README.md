@@ -27,7 +27,12 @@
         "message": "註冊成功",
         "uid": "RFID 內容",
     }
-[失敗回應]：
+[失敗回應 - 重複註冊]：
+    {
+        "success": false,
+        "message": "重複註冊，操作失敗",
+    }
+[失敗回應 - 異常處理]：
     {
         "success": false,
         "message": "操作失敗，請重新在試一次",
